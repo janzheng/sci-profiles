@@ -30,7 +30,9 @@
 
   .SocialBox {
     // position: sticky;
-    padding: $size-2x;
+    @include screen-sm {
+      padding: $size-2x;
+    }
     // top: 518px; // size of the profile
     margin-left: 4px;
 

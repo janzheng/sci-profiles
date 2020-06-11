@@ -38,7 +38,7 @@
 
 	<!-- <header class="Profile-header"></header> -->
 
-	<article class="Profile-article _grid-2-3 _grid-gap-large">
+	<article class="Profile-article _grid-2-3 _grid-gap-large _grid-xs-block">
 		<aside class="Profile-aside ">
 			<div class="Profile-aside--slot _pinned-sm _padding-2-sm _padding-top-2-i _padding-bottom-i">
 				{#if profileImage}
