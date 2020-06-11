@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6 {
 // semantically used to introduce a page, not meant to surround content
 h1 {
   // @extend %font-sans;
-  padding-top: $size;
+  padding-top: $size !important;
   padding-bottom: $size;
   // letter-spacing: 0.23px;
   font-size: $size-5;
@@ -97,10 +97,10 @@ h4 {
 h5 {
   // font-size: $size + 2px;
   @extend %font-sans;
-  font-size: $size--1;
-  line-height: $size--1 * 1.6;
+  font-size: $size--2;
+  line-height: $size--2 * 1.6;
   font-weight: normal;
-  margin-top: $size-3;
+  margin-top: $size-5;
   padding-bottom: 0;
 
   & + h4 {

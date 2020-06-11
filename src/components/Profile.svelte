@@ -40,7 +40,7 @@
 
 	<article class="Profile-article _grid-2-3 _grid-gap-large">
 		<aside class="Profile-aside ">
-			<div class="Profile-aside--slot _pinned-sm _padding-2-sm _padding-top-2-i">
+			<div class="Profile-aside--slot _pinned-sm _padding-2-sm _padding-top-2-i _padding-bottom-i">
 				{#if profileImage}
 					<img class="Profile-image" src={profileImage} alt={`${name} profile image`}/>
 				{/if}
@@ -49,9 +49,8 @@
 				{#if pitch}
 					<div class="Profile-pitch">{@html render(pitch)}</div>
 				{/if}
-
-				<SocialBox email={email} socialProfiles={socialProfiles} />
 			</div>
+			<SocialBox email={email} socialProfiles={socialProfiles} />
 		</aside>
 
 		<main class="Profile-main">

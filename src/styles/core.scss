@@ -138,10 +138,10 @@ html, body, * {
   width: 1em;
   margin-right: .05em;
   padding-right: 1em;
-  text-align: center;
-  font-variant: normal;
-  text-transform: none;
-  // line-height: 1em;
+  text-align: center;    
+  font-variant: normal;  
+  text-transform: none; 
+  // line-height: 1em;  
   line-height: $size;
  
   position: relative;
@@ -161,7 +161,7 @@ html, body, * {
   &.icon-researchgate { 	font-size: 120% !important; position: relative; bottom: 0px; left: -1px; color: #00CCBB;}
   &.icon-google-scholar { font-size: 120% !important; position: relative; bottom: -3px; left: -2px; color: #3F47CC;}
 }
-
+ 
 
 .icon-mail:before { content: '\e800'; } /* '' */
 .icon-bookmark:before { content: '\e803'; } /* '' */

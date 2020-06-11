@@ -2244,6 +2244,35 @@ button {
   background-color: #2f2f2f;
 }
 
+._color-brand-background {
+  color: #ffffff;
+}
+._color-brand-background-i {
+  color: #ffffff !important;
+}
+
+._color-bg-brand-background {
+  background-color: #ffffff;
+}
+._color-bg-brand-background-i {
+  background-color: #ffffff !important;
+}
+
+._color-border-brand-background {
+  border-color: #ffffff;
+}
+._color-border-brand-background-i {
+  border-color: #ffffff !important;
+}
+
+._color-hover-brand-background:hover {
+  color: #ffffff;
+}
+
+._color-hoverborder-brand-background:hover:after {
+  background-color: #ffffff;
+}
+
 ._color-blue-0 {
   color: #f6faff;
 }
@@ -15288,6 +15317,7 @@ h4,
 
  */
 body {
+  background-color: #ffffff;
   color: #2f2f2f;
 }
 
@@ -15305,7 +15335,7 @@ h1.__inline, h2.__inline, h3.__inline, h4.__inline, h5.__inline, h6.__inline {
 }
 
 h1 {
-  padding-top: 18px;
+  padding-top: 18px !important;
   padding-bottom: 18px;
   font-size: 40px;
   line-height: 51.2px;
@@ -15339,10 +15369,10 @@ h4 {
 }
 
 h5 {
-  font-size: 14px;
-  line-height: 22.4px;
+  font-size: 12px;
+  line-height: 19.2px;
   font-weight: normal;
-  margin-top: 24px;
+  margin-top: 40px;
   padding-bottom: 0;
 }
 h5 + h4 {
@@ -15437,9 +15467,21 @@ a.__quiet, ._link.__quiet {
   }
 }
 
+.Profile-aside {
+  position: relative;
+}
+.Profile-aside .Profile-aside--slot {
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+}
+.Profile-aside .SocialBox {
+  padding: 32px;
+  margin-left: 4px;
+}
+
 .Profile-image {
   object-fit: contain;
-  max-width: 200px;
+  width: 200px;
   border-radius: 100%;
 }
 
@@ -15480,6 +15522,7 @@ h6 {
 }
 
 body {
+  background-color: #ffffff;
   color: #2f2f2f;
   font-family: "-apple-system", "BlinkMacSystemFont", "system-ui", "Segoe UI", "Encode Sans", "Open Sans", "Oxygen-Sans", "Helvetica", "arial", "sans-serif";
   font-size: 18px;
