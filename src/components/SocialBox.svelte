@@ -4,6 +4,15 @@
 	export let email, socialProfiles
 
 	const socials = Array.from(socialProfiles)
+
+	socials.map(social => {
+		if(social.type == 'twitter')
+			social.username = '@'+social.username
+		// if(social.type == 'linkedin')
+		// 	social.username = 'linkedin/in/'+social.username
+		if(social.type == 'google-scholar')
+			social.username = 'Google Scholar'
+	})
 </script>
 
 

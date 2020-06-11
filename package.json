@@ -11,7 +11,7 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
-    "jess": "ls && sapper build --legacy; now --local-config now-jessica-sacher.json",
+    "jess": "ls && sapper build --legacy; now --prod --local-config now-jessica-sacher.json",
     "prod": "ls && sapper build --legacy; now",
     "commit": "git add . -A ; git commit ; git push origin master "
   },

@@ -20,7 +20,7 @@
 
   const socialProfiles = socialParse(Profile.fields['Sidebar::Social'])
 
-  $: console.log('socialSidebar:', socialProfiles)
+  // $: console.log('socialSidebar:', socialProfiles)
 </script>
 
 
