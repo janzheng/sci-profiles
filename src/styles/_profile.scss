@@ -22,6 +22,10 @@
 
 .Profile-aside {
   position: relative;
+  
+  @include screen-xs {
+    margin-bottom: $size-6;
+  }
 
   .Profile-aside--slot {
     background-color: rgba(#ffffff,0.8);

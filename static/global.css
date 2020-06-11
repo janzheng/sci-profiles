@@ -15470,6 +15470,11 @@ a.__quiet, ._link.__quiet {
 .Profile-aside {
   position: relative;
 }
+@media (max-width: 767px) {
+  .Profile-aside {
+    margin-bottom: 48px;
+  }
+}
 .Profile-aside .Profile-aside--slot {
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 10;
