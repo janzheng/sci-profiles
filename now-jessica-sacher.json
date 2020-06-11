@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "name": "scipro-jessica-sacher",
+  "builds": [
+    { "src": "package.json", "use": "now-sapper" }
+  ]
+}

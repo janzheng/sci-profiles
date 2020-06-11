@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "now-sapper-fauna",
+  "builds": [
+    { "src": "package.json", "use": "now-sapper" }
+  ],
+  "regions": [
+    "lhr"
+  ]
+}
