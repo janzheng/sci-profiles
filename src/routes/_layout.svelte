@@ -2,12 +2,14 @@
   export async function preload(page, session) {
     const _result = await this.fetch(`/api/cytosis`).then(r => r.json())
 
-    // console.log('api result:', _result)
-    const Content = _result['Content']
-    const Profiles = _result['Profiles'] 
-    const Domain = _result['Domain']
-    const Profile = _result['Profile'] // if given a domain, this is the single profile linked to that domain (e.g. jessica @ phage.ca)
-    return { Content, Profiles, Domain, Profile }
+    console.log('api result:', _result)
+    const Profile = _result 
+    // const Content = _result['Content']
+    // const Profiles = _result['Profiles'] 
+    // const Domain = _result['Domain']
+    // const Profile = _result['Profile'] // if given a domain, this is the single profile linked to that domain (e.g. jessica @ phage.ca)
+    // return { Content, Profiles, Domain, Profile }
+    return { Profile }
   }
 </script>
 
@@ -28,22 +30,27 @@
   import { setContext } from 'svelte'
   import { writable } from 'svelte/store'
 
-	export let Content, Profiles, Domain, Profile
-  const Content$ = writable(Content)
-  $: $Content$ = Content
-  setContext('Content', Content$)
-
-  const Profiles$ = writable(Profiles)
-  $: $Profiles$ = Profiles
-  setContext('Profiles', Profiles$)
-
-  const Domain$ = writable(Domain)
-  $: $Domain$ = Domain
-  setContext('Domain', Domain$)
-
+  export let Profile
   const Profile$ = writable(Profile)
   $: $Profile$ = Profile
   setContext('Profile', Profile$)
+
+	// export let Content, Profiles, Domain, Profile
+ //  const Content$ = writable(Content)
+ //  $: $Content$ = Content
+ //  setContext('Content', Content$)
+
+ //  const Profiles$ = writable(Profiles)
+ //  $: $Profiles$ = Profiles
+ //  setContext('Profiles', Profiles$)
+
+ //  const Domain$ = writable(Domain)
+ //  $: $Domain$ = Domain
+ //  setContext('Domain', Domain$)
+
+ //  const Profile$ = writable(Profile)
+ //  $: $Profile$ = Profile
+ //  setContext('Profile', Profile$)
 </script>
 
 <style type="text/scss">

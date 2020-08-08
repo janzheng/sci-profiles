@@ -1706,12 +1706,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     sha.js "^2.4.8"
 
 cross-fetch@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.4.tgz#7bef7020207e684a7638ef5f2f698e24d9eb283c"
-  integrity sha512-MSHgpjQqgbT/94D4CyADeNoYh52zMkCX4pcJvPP5WqPsLFMKjr2TCMg381ox5qI0ii2dPwaLx/00477knXqXVw==
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.5.tgz#2739d2981892e7ab488a7ad03b92df2816e03f4c"
+  integrity sha512-FFLcLtraisj5eteosnX1gf01qYDCOc4fDy0+euOt8Kn9YBY2NtXL/pCoYPavw24NIQkQqm5ZOLsGD5Zzj0gyew==
   dependencies:
     node-fetch "2.6.0"
-    whatwg-fetch "3.0.0"
 
 cross-spawn@^3.0.0:
   version "3.0.1"
@@ -1756,10 +1755,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-cytosis@^0.0.414:
-  version "0.0.414"
-  resolved "https://registry.yarnpkg.com/cytosis/-/cytosis-0.0.414.tgz#27fa3ad5ebffeaf71878918f1683573c113097b9"
-  integrity sha512-KbZbp1Uvj+Bu0KnOVbnTtcdb6Q0Owjpjbj1D+DDWP60+iPy9FZiCf3jmdlWRqkpnvv+quPpO1A06KaLHJdNZpQ==
+cytosis@^0.0.420:
+  version "0.0.420"
+  resolved "https://registry.yarnpkg.com/cytosis/-/cytosis-0.0.420.tgz#e28ccf7cf0cdb8ac3eb9137cb431fabebc80cc13"
+  integrity sha512-rB12eHsV/oSNh/HnWklZDfzOyTvSbAXrKMOwJ89wrINQW2A/8xFI7HQeWS44lKjI3uSiOG3NoU2+zDC8verB4w==
   dependencies:
     airtable "^0.8.1"
 
@@ -2130,10 +2129,10 @@ fast-json-stable-stringify@^2.0.0:
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz#874bf69c6f404c2b5d99c481341399fd55892633"
   integrity sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
 
-faunadb@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/faunadb/-/faunadb-2.14.0.tgz#1f20ac94d5d74a537784ab9af92838e0446a5415"
-  integrity sha512-Nqf2/AqKYnWuMuuHQwdo5MkXN7j088xcDljOHeB5csfMmK5RE3rD+HsM8La8gK1YfocYmIJ0fLXoF2fdlqRfgQ==
+faunadb@^2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/faunadb/-/faunadb-2.14.2.tgz#345720fceea96ab76fa7f0e0f2d282dca0857115"
+  integrity sha512-W7IjQJW2GyFQom6vNidoLHQGtsEd0TiTwGxIKgyKprkuaIOSzbQySPsh6fR1l2K7i8MGLH/EObfjtJnmIX+hkw==
   dependencies:
     base64-js "^1.2.0"
     btoa-lite "^1.0.0"
@@ -5244,11 +5243,6 @@ vlq@^0.2.2:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.3.tgz#8f3e4328cf63b1540c0d67e1b2778386f8975b26"
   integrity sha512-DRibZL6DsNhIgYQ+wNdWDL2SL3bKPlVrRiBqV5yuMm++op8W4kGFtaQfCs4KEJn0wBZcHVHJ3eoywX8983k1ow==
-
-whatwg-fetch@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
-  integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
 
 which-module@^2.0.0:
   version "2.0.0"

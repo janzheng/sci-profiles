@@ -27,6 +27,8 @@ import * as sapper from '@sapper/server';
 import Cytosis from 'cytosis';
 import { config } from "dotenv";
 import { cacheGet, cacheSet } from "../../_utils/cache"
+import { getContentFromTable } from "../../_utils/notion"
+import { sendData } from "../../_utils/sapper-helpers" 
 
 
 
@@ -37,15 +39,14 @@ const view = process.env.STATUS=='Preview' ? 'Preview' : 'Published'
 const domain = process.env.DOMAIN 
 
 
-const getContent = async () => {
+const getProfile = async () => {
 	let cacheStr = `${view}-Content`
 	if(domain)
 		cacheStr = `${domain}-${cacheStr}`
 	const cachedContent = cacheGet(cacheStr)
 
-	if (cachedContent) {
-		console.log('$: loaded cached controller')
-		return Promise.resolve(cachedContent)
+	if (cacheGet(cacheStr)) {
+		return cacheGet(cacheStr)
 	}
 
 	try {
@@ -56,12 +57,6 @@ const getContent = async () => {
 		    "view": view,
 		  }
 	  },
-	  // {
-		 //  tables: ["Bases"],
-	  // },
-	  // {
-		 //  tables: ["Collections"],
-	  // }
 	  ]
 
 		// console.log('loading ctrl cytosis...', bases)
@@ -74,16 +69,17 @@ const getContent = async () => {
 	  })
 
 
-		if(domain) {
+		if(domain) { // for prototyping make sure the domain matches 
 			_cytosis.results['Profile'] = _cytosis.results['Profiles'].filter(profile => profile.fields['Domain'] == domain)[0]
-		}
-	  
-	  const data = _cytosis.results
-		cacheSet(cacheStr, data, 60*60 );
-		return Promise.resolve(data)
+		} else
+			return undefined
+
+	  const profile = _cytosis.results['Profiles'][0]
+		cacheSet(cacheStr, profile, 60*60 )
+		return profile
 
 	} catch(err) {
-		throw new Error('[faves/getContent] Error', err)
+		throw new Error('[api/cytosis] Error', err)
 	}
 }
 
@@ -93,78 +89,30 @@ const getContent = async () => {
 
 
 export async function get(req, res) {
-	try {
-		const _result = await getContent('Content')
-		// console.log('ctrl cytosis loaded:', _result)
 
-		if(domain) {
-			_result['Domain'] = domain 
+	console.log('cytosis get')
+	try {
+		// const profile = 'wtf is going on'
+		const profile = await getProfile()
+		// console.log('ctrl cytosis loaded:', profile)
+
+		if(profile.fields['Domain']) {
+			profile['Domain'] = domain 
 		}
 
-    const json = JSON.stringify(_result)
-    send(res, 200, json, {
-      'Content-Type': 'application/json'
-    });
+		// console.log('1111111 Profile:::', profile.fields['NotionTableId'])
+
+
+		if(profile.fields['ContentSource'] === 'Notion' && profile.fields['NotionTableId'])
+			profile['Notion'] = await getContentFromTable(profile.fields['NotionTableId']) 
+
+		// console.log('Profile:::', profile)
+
+		return sendData(profile, res)
 	} catch(err) {
-		throw new Error('[faves/get] Error', err)
+		throw new Error('[api/cytosis] Error', err)
 	}
 }
-
-
-
-
-
-
-
-// export function post(req, res) {
-
-// 	res.writeHead(200, { 'Content-Type': 'application/json' })
-// 	// json = JSON.stringify(req.body)
-// 	json = req.body // JSON.parse(json)
-
-// 	const apiEditorKey = process.env.SCIPRO_CREATOR_API
-// 	const baseId = process.env.SCIPRO_BASE
-
-
-// 	// validate?
-// 	// console.log('saving >>>', json)
-//   const saveToCytosis = async () => {
-//     await Cytosis.save({
-//     	recordId: json.recordId || null,
-//       apiKey: apiEditorKey,
-//       baseId: baseId,
-//       tableName: 'Profiles',
-//       tableOptions: {
-//         // insertOptions: ['typecast'],
-//       },
-//       payload: {
-//       	'UserId': json.userId,
-//       	'Name': json.name,
-//         'Email': json.email,
-//       }
-//     })
-//   }
-
-//   saveToCytosis().then(async (_res) => {
-//   	// console.log('saveToCytosis >>> ', _res)
-
-//   	// if(json.mailer && json.mailer.send) {
-// 	  // 	try {
-// 			// 	const mail = automailer(json.mailer)
-// 			//   .then(function (response) {
-// 			//     // console.log(response);
-// 			// 		res.end('post completed, email sent!')
-// 			//   })
-// 	  // 	} catch(err) {
-// 	  // 		console.error('mail error:', err)
-// 	  // 	}
-//   	// }
-
-// 		res.end('post/cytosis.js updated!')
-//   })
-
-// }
-
 
 
 

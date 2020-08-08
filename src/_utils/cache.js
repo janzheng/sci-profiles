@@ -1,16 +1,16 @@
 /*
 
 	Simple wrapper around caching
-	- nodecache to start
 	- file-based or fauna-based caching later
 	- wrapper makes swapping easier
 
+	last updated: 8/5/2020
 
 */
+
 import NodeCache from 'node-cache'
-
 const nodecache = new NodeCache()
-
+const cacheList = []
 
 
 export const cacheGet = src => {
@@ -18,7 +18,32 @@ export const cacheGet = src => {
 	return nodecache.get(src)
 }
 
-export const cacheSet = (src, data, ttl) => {
+export const cacheSet = (src, data, ttl=60*60) => {
 	console.log('cacheSet',src,ttl)
+	cacheList.push({src, ttl})
   return nodecache.set(src, data, ttl)
+}
+
+export const cacheKeys = () => {
+  return {
+  	keys: nodecache.keys(),
+  	cacheList: cacheList
+  }
+}
+
+export const cacheClear = (src) => {
+	if(src) {
+		nodecache.del(src)
+
+		const itemIndex = cacheList.findIndex(c => c.str === src)
+		cacheList.splice(itemIndex,1)
+		return true
+	}
+
+	cacheList.map(cache => {
+		nodecache.del(cache.src)
+	})
+	cacheList = []
+
+	return true
 }

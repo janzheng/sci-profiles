@@ -20,6 +20,8 @@
 
   const socialProfiles = socialParse(Profile.fields['Sidebar::Social'])
 
+  const cvContent = Profile.Notion['content'] || Profile.fields['CV']
+
   // $: console.log('socialSidebar:', socialProfiles)
 </script>
 
@@ -54,7 +56,7 @@
 		</aside>
 
 		<main class="Profile-main">
-			{@html render(Profile.fields['CV'])}
+			{@html render(cvContent)}
 		</main>
 
 	</article>
