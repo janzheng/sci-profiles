@@ -19,7 +19,7 @@
   const Domain$ = getContext('Domain')
   $: Domain = $Domain$
 
-  $: console.log('index profile:', Profile)
+  // $: console.log('index profile:', Profile)
 </script>
 
 

@@ -4,13 +4,13 @@
 	- file-based or fauna-based caching later
 	- wrapper makes swapping easier
 
-	last updated: 8/5/2020
+	last updated: 8/8/2020
 
 */
 
 import NodeCache from 'node-cache'
 const nodecache = new NodeCache()
-const cacheList = []
+let cacheList = []
 
 
 export const cacheGet = src => {

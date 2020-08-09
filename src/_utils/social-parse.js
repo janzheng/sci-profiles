@@ -1,9 +1,27 @@
 
 
+
 /*
-    modified to include academic groups
-    source: https://www.npmjs.com/package/@salesflare/social-profile-url-parser
+
+  Social Parser
+
+  Uses social-parser to replace "{{ faceboook }}" with the facebook account information
+  given in the socialStr parameter, e.g. "https://twitter.com/yawnxyz | https://facebook.com/janzheng"
+
+  - pretty useful for building contact sheets without having to specify each social account
+  - you can just dump a few account values in a string and this will sort it out
+
+
+  modified to include academic groups
+  source: https://www.npmjs.com/package/@salesflare/social-profile-url-parser
+
+
+
+  Last updated: 8/8/2020
+
 */
+
+
 const internals = {
     // We sometimes use [A-Za-z_]{0,3} instead of www since there are localized urls like au.linkedin.com
     // The {0,3} will get flagged as unsafe but I have not found a better solution yet
@@ -91,9 +109,9 @@ const internals = {
 
         ['orcid', 'ORCID'],
         ['researchgate', 'ResearchGate'],
-        ['google-scholar', 'Google Scholar'],
+        ['google-scholar', 'GoogleScholar'],
         ['publons', 'Publons'],
-        ['protocolsio', 'protocols.io'],
+        ['protocolsio', 'ProtocolsIO'],
     ])
 };
 
@@ -110,8 +128,9 @@ const internals = {
  * @param {String} inputText
  * @returns {Array<parseResult>}
  */
-exports.parse = (inputText) => {
+export const socialParse = (inputText) => {
 
+    console.log('parsing .....')
     const resultsMap = new Map();
     Object.entries(internals.regexes).forEach(([type, regex]) => {
 
@@ -130,8 +149,26 @@ exports.parse = (inputText) => {
         }
     });
 
-    // return [...resultsMap.values()];
-    return resultsMap
+    console.log('socialparse results: :::', resultsMap)
+    // console.log('socialparse results: :::', [...resultsMap.values()])
+    return [...resultsMap.values()]
+    // return resultsMap // this returns an array where first value is the type and second value is the actual value object
 };
 
+
+
+// import socialParser from './social-parser'
+export const socialReplace = (text, socialStr) => {
+  
+  let result = text
+  const replacer = socialParse(socialStr)
+
+  Array.from(replacer.keys()).map(key => {
+    let regex = new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, 'g')
+    result = result.replace(regex, replacer.get(key).url)
+    // if (social.type ==)
+  })
+
+  return {text: result, data: [... replacer.values()]}
+}
 

@@ -21,10 +21,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
+    "@polka/redirect": "^1.0.0-next.0",
     "@polka/send": "^0.4.0",
     "airtable": "^0.8.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.1",
+    "crypto": "^1.0.1",
     "cytosis": "^0.0.420",
     "express-session": "^1.17.1",
     "faunadb": "^2.14.2",
@@ -33,6 +36,10 @@
     "markdown-it-attrs": "^3.0.3",
     "marked": "^1.0.0",
     "node-cache": "^5.1.1",
+    "nodemailer": "^6.4.11",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
     "polka": "next",
     "sanitize-html": "^1.26.0",
     "session-file-store": "^1.4.0",
@@ -61,8 +68,8 @@
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^4.0.4",
-    "sapper": "^0.27.13",
-    "svelte": "^3.0.0",
+    "sapper": "^0.28.0",
+    "svelte": "^3.24.1",
     "svelte-preprocess": "^3.7.4"
   }
 }

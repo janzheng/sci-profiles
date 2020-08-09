@@ -3,7 +3,7 @@
 	import marked from 'marked'
 	import SocialBox from '../components/SocialBox.svelte'
 	import { render } from '../_utils/markdownit.js'
-	import { socialParse } from '../_utils/helpers.js'
+	import { socialParse } from '../_utils/social-parse.js'
 
 	export let Profile
 
@@ -20,7 +20,7 @@
 
   const socialProfiles = socialParse(Profile.fields['Sidebar::Social'])
 
-  const cvContent = Profile.Notion['content'] || Profile.fields['CV']
+  const cvContent = Profile.Notion ? Profile.Notion['content'] : Profile.fields['CV']
 
   // $: console.log('socialSidebar:', socialProfiles)
 </script>

@@ -3,20 +3,25 @@
 
 	export let email, socialProfiles
 
-	const socials = Array.from(socialProfiles)
+	socialProfiles = socialProfiles // reactive
 
-	socials.map(social => {
+	let socials
+	$: socials = Array.from(socialProfiles)
+
+	$: socials.map(social => {
 		if(social.type == 'twitter')
 			social.username = '@'+social.username
 		// if(social.type == 'linkedin')
 		// 	social.username = 'linkedin/in/'+social.username
-		if(social.type == 'google-scholar')
+		if(social.type == 'google-scholar') {
 			social.username = 'Google Scholar'
+		}
 	})
 </script>
 
 
 <div class="SocialBox">
+
 
 	{#if email}
 		<div class="Email">
@@ -25,6 +30,7 @@
 	{/if}
 
 	{#each socials as social}
+		<!-- social: {{ JSON.stringify(social) }} -->
 		<div class={social.type}>
 			<i class={`_font-phage icon-${social.type}`}/>
 			<a href={social.url} alt={social.type}>{ social.username }</a> <!-- {social.type} -->

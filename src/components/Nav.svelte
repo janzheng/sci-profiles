@@ -2,15 +2,15 @@
 <script>
 	export let segment, user;
 	import { goto, stores } from '@sapper/app';
-	import { logout } from '../_utils/auth-helpers';
+	// import { logout } from '../_utils/auth-helpers';
 
 	const { session } = stores();
 
 	const handleLogout = () => {
-		logout(session).then((res) => {
-			goto('/')
-			user = null
-	  })
+		// logout(session).then((res) => {
+		// 	goto('/')
+		// 	user = null
+	 //  })
 
 	}
 </script>

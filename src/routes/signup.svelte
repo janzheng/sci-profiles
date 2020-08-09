@@ -1,9 +1,9 @@
 <svelte:head>
-	<title>Signup</title>
+  <title>Sign Up</title>
 </svelte:head>
 
 <style>
-  .signup {
+  .login {
     max-width: 340px;
     margin: 0 auto;
     padding: 1rem;
@@ -37,69 +37,172 @@
   }
 </style>
 
-<h1>Signup page</h1>
+
+<div class="_section-page _padding-top-2 _margin-center">
+  <div class="_section-article _margin-center">
+    <h1>Sign Up</h1>
 
 
 
-<!-- helpful for forms: https://www.nielsvandermolen.com/signup-form-html5-validation-svelte/ -->
+    <!-- helpful for forms: https://www.nielsvandermolen.com/signup-form-html5-validation-svelte/ -->
 
-<div className="signup">
-  <form on:submit|preventDefault={handleSubmit}>
-    <label htmlFor="email">Email</label>
+    <div className="login">
+      <!-- <form on:submit|preventDefault={handleSignupActivate}> -->
+      <form on:submit|preventDefault={handleSignup}>
+        <label htmlFor="email">Email
+          <input
+            type="text"
+            id="email"
+            name="email"
+            bind:value={email}
+          />
+        </label>
 
-    <input
-      type="text"
-      id="email"
-      name="email"
-      bind:value={email}
-    />
 
-    <label htmlFor="password">Password</label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      bind:value={password}
-    />
+        <label htmlFor="password">Password
+          <input
+            type="password"
+            id="password"
+            name="password"
+            bind:value={password}
+          />
+        </label>
 
-    <button type="submit">Signup</button>
-    {#if isLoading}
-    	<p>... signing up! ...</p>
-    {/if}
+        <button type="submit">Sign Up</button>
+        {#if isLoading}
+          <p>... signing up ...</p>
+        {/if}
 
-    {#if error}
-    	<p className="error">{error}</p>
-    {/if}
+        {#if error}
+          <p className="error">{error}</p>
+        {/if}
 
-  </form>
+      </form>
+
+      <div class="_margin-top">
+        <form on:submit|preventDefault={(evt)=>handleOauth(evt,'twitter')}>
+          <button type="submit">Log in with Twitter</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-      
+        
+
+
+
 
 <script>
-	import { goto, stores } from '@sapper/app';
-	import { signup } from '../_utils/auth-helpers';
+  import { goto, stores } from '@sapper/app';
+  import { login } from '../_utils/auth/client-helpers';
+  import { fetchPost } from '../_utils/fetch-post';
+  import { logger, logerror } from '../_utils/logger';
+  import { onMount } from 'svelte';
 
-	const { session } = stores();
-	let email = 'userx@test.com', password = 'testtest', isLoading = false, error
+  let email = 'janeazy@gmail.com', password = 'testtest', isLoading = false, error, token = '', user
+
+  onMount(async () => {
+
+    try {
+      const response = await fetch(`api/passport/login`)
+      // console.log('onMount response:', response)
+      if(response.status == 200) {
+        const results = await response.json()
+        logger('[onMount]', 'Logged in:', results)
+        if(results.user)
+          user = results.user
+      } else {
+        // error = err
+        logger('[onMount]', 'Error:', results)
+        // goto('/passport');
+      }
+    } catch (err) {
+      error = err
+      console.error(err)
+      loggerror('[onMount]', 'Error:', err)
+      return
+    }
+  })
 
 
-	const handleSubmit = async (event) => {
-	  event.preventDefault()
 
-  	isLoading = true
+  const handleOauth = async (event, service='google') => {
+    event.preventDefault()
+    goto(`/auth/${service}`)
+  }
 
-	  try {
-		  signup({email, password, session}).then((res) => {
-				goto('/profile');
-		  }).catch((err) => {
-				error = "User already exists!"
-				isLoading = false
-		  })
-	  } catch (err) {
-	  	console.error(err)
-	  	return
-	  }
-	}
+  const handleSignup = async (event) => {
+    event.preventDefault()
+    isLoading = true
+
+    const data = {
+      email,
+      password
+    }
+
+    try {
+      // const response = await fetch(
+      // `/api/passport/signup`, {
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   method: 'POST',
+      //   body: JSON.stringify(data)
+      // })
+
+      const response = await fetchPost('/api/passport/signup', data, fetch)
+      isLoading = false
+      if(response.status == 200) {
+        const results = await response.json()
+        logger('[handleSignup]', 'Signed up:', results)
+        if(results.user)
+          user = results.user
+      }
+
+    } catch (err) {
+      error = err
+      // console.error(err)
+      loggerror('[handleSignup]', 'Error:', err)
+      return
+    }
+  }
+
+
+  const handleSignupActivate = async (event) => {
+    event.preventDefault()
+    isLoading = true
+
+    const data = {
+      email,
+      password
+    }
+
+    try {
+      // const response = await fetch(
+      // `/api/passport/activate`, {
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   method: 'POST',
+      //   body: JSON.stringify(data)
+      // })
+      const response = await fetchPost('/api/passport/activate', data, fetch)
+      // console.log('Signup w/ activation response:', response)
+      isLoading = false
+      if(response.status == 200) {
+        const results = await response.json()
+        // console.log('SIGNED UP!:', results)
+        logger('[handleSignupActivate]', 'Signed up:', results)
+        if(results.user)
+          user = results.user
+      }
+
+    } catch (err) {
+      error = err
+      loggerror('[handleSignupActivate]', 'Error:', err)
+      return
+    }
+  }
 </script>
 
 
