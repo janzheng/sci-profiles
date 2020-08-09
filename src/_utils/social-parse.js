@@ -130,7 +130,7 @@ const internals = {
  */
 export const socialParse = (inputText) => {
 
-    console.log('parsing .....')
+    // console.log('parsing .....')
     const resultsMap = new Map();
     Object.entries(internals.regexes).forEach(([type, regex]) => {
 
@@ -149,7 +149,7 @@ export const socialParse = (inputText) => {
         }
     });
 
-    console.log('socialparse results: :::', resultsMap)
+    // console.log('socialparse results: :::', resultsMap)
     // console.log('socialparse results: :::', [...resultsMap.values()])
     return [...resultsMap.values()]
     // return resultsMap // this returns an array where first value is the type and second value is the actual value object

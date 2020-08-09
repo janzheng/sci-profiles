@@ -41,6 +41,7 @@
 <div class="_section-page _padding-top-2 _margin-center">
   <div class="_section-article _margin-center">
     <h1>Profile</h1>
+    <p><a href={`/u/${Slug}`} target="_blank">View profile</a></p>
 
 
     <div class="_grid-2 _margin-bottom-2">
@@ -148,7 +149,7 @@
 
 
   // profile items
-  let Name, PublicEmail, Social, Pitch, Title, CV
+  let Name, PublicEmail, Social, Pitch, Title, CV, Slug
 
   // parsed social
   let socialProfiles
@@ -164,6 +165,7 @@
       Title = user['Profile'].fields['Title']
       CV = user['Profile'].fields['CV']
       socialProfiles = socialParse(Social); socialProfiles=socialProfiles // reactive
+      Slug = user['Profile'].fields['Slug']
     }
   }
 

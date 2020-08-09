@@ -111,6 +111,40 @@ export const getProfileById = async (id) => {
 }
 
 
+// get record of a profile
+export const getProfileBySlug = async (slug) => {
+
+  let cacheStr = `profile-${slug}`
+  if (cacheGet(cacheStr))
+    return cacheGet(cacheStr)
+
+  const cytosis = await new Cytosis({
+    apiKey: apiReadKey,
+    baseId: baseId,
+    bases:  [
+      {
+        tables: ['Profiles'],
+        options: {
+          "maxRecords": 1,
+          keyword: `${slug}`,
+          matchKeywordWithFields: ['Slug'],
+          matchStyle: 'exact',
+        }
+      },
+    ],
+    routeDetails: '[api/getProfileBySlug]',
+  })
+
+  if(cytosis.results['Profiles'] && cytosis.results['Profiles'][0]) {
+    cacheSet( cacheStr, cytosis.results['Profiles'][0] )
+    return cytosis.results['Profiles'][0] 
+  }
+
+  return undefined
+}
+
+
+
 
 // save profile back to airtable
 export const saveProfile = async (profile) => {
@@ -145,27 +179,29 @@ export const saveProfile = async (profile) => {
 
 
 export async function get(req, res) {
-  const { id } = req.query
+  const { id, slug } = req.query
   let profile
 
   try {
     if(id)
       profile = await getProfileById(id)
+    else if(slug)
+      profile = await getProfileBySlug(slug)
     else
       profile = await getProfile()
 
-    if(profile.fields['Domain']) {
+    if(profile && profile.fields['Domain']) {
       profile['Domain'] = domain 
     }
 
-    if(profile.fields['ContentSource'] === 'Notion' && profile.fields['NotionTableId'])
+    if(profile && profile.fields['ContentSource'] === 'Notion' && profile.fields['NotionTableId'])
       profile['Notion'] = await getContentFromTable(profile.fields['NotionTableId']) 
 
     // console.log('Profile:::', profile)
 
     return sendData(profile, res)
   } catch(err) {
-    throw new Error('[api/cytosis] Error', err)
+    console.error('[api/profile/get]', err)
   }
 }
 
@@ -179,7 +215,7 @@ export async function post(req, res) {
     const profile = await saveProfile(req.body)
     return sendData(profile, res)
   } catch(err) {
-    throw new Error('[api/post] Error', err)
+    console.error('[api/profile/post]', err)
   }
 }
 

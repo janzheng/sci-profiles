@@ -9,7 +9,7 @@
 
 	let name = Profile.fields['Name']
 	let siteTitle = name
-	let profileImage = Profile.fields['ProfileImage'][0]['url']
+	let profileImage = Profile.fields['ProfileImage'] ? Profile.fields['ProfileImage'][0]['url'] : undefined
 	let pitch = Profile.fields['Pitch']
 	let email = Profile.fields['PublicEmail']
 
@@ -49,14 +49,14 @@
 
 				<h1 class="Profile-name">{siteTitle}</h1>
 				{#if pitch}
-					<div class="Profile-pitch">{@html render(pitch)}</div>
+					<div class="Profile-pitch">{@html render(pitch || '')}</div>
 				{/if}
 			</div>
 			<SocialBox email={email} socialProfiles={socialProfiles} />
 		</aside>
 
 		<main class="Profile-main">
-			{@html render(cvContent)}
+			{@html render(cvContent || '' )}
 		</main>
 
 	</article>
