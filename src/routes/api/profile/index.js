@@ -162,6 +162,7 @@ export const saveProfile = async (profile) => {
     })
 
     cacheClear(`profile-${recordId}`)
+    cacheClear(`profile-${record.fields['Slug']}`)
     return record
 
   } catch(e) {

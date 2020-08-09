@@ -24,23 +24,31 @@ const passport = getPassport()
 
 initUsers() // populate with fake data
 
+// for severless
+import cookieSession from "cookie-session";
+
 
 
 const app = polka() // You can also use Express
 
 	.use(
 		json(),
-		session({
-			secret: 'conduit',
-			resave: false,
-			saveUninitialized: true,
-			cookie: {
-				maxAge: 31536000
-			},
-			store: new FileStore({
-				// path: process.env.NOW ? `/tmp/sessions` : `.sessions`
-				path: '/tmp/sessions'
-			})
+    // session({ // doesn't work with serverless, but overall more secure
+    //   secret: 'conduit',
+    //   resave: false,
+    //   saveUninitialized: true,
+    //   cookie: {
+    //     maxAge: 31536000
+    //   },
+    //   store: new FileStore({
+    //     // path: process.env.NOW ? `/tmp/sessions` : `.sessions`
+    //     path: '/tmp/sessions'
+    //   })
+    // }),
+		cookieSession({ // works with serverless
+			name: 'passport-auth-session',
+      secret: process.env.COOKIE_SESSION_KEY, // chose not to use kes
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
 		}),
 
 		compression({ threshold: 0 }),

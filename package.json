@@ -27,6 +27,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.1",
+    "cookie-session": "^1.4.0",
     "crypto": "^1.0.1",
     "cytosis": "^0.0.420",
     "express-session": "^1.17.1",
