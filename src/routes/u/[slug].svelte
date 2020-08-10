@@ -12,12 +12,12 @@
 	}
 </script>
 
-<ProfilePage Profile={ profile } />
+<RenderProfile Profile={ profile } />
 
 
 <script>
 	import Cytosis from 'cytosis';
-	import ProfilePage from '../../components/Profile.svelte';
+	import RenderProfile from '../../components/RenderProfile.svelte';
 
   import { getContext, onMount } from 'svelte';
 

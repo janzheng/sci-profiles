@@ -38,7 +38,8 @@
 </style>
 
 
-<div class="_section-page _padding-top-2 _margin-center">
+<!-- <div class="_section-page _padding-top-2 _margin-center"> -->
+<div class="_grid-2 _padding">
   <div class="_section-article _margin-center">
     <h1>Profile</h1>
     <p><a href={`/u/${Slug}`} target="_blank">View profile</a></p>
@@ -70,6 +71,20 @@
         bind:value={Name}
       />
     </label>
+
+    <label htmlFor="CustomSlug">Custom Slug
+      <input
+        type="email"
+        id="CustomSlug"
+        name="CustomSlug"
+        bind:value={CustomSlug}
+      />
+    </label>
+
+    <div class="Slug _margin-bottom-2">
+      Your slug is currently set as: { Slug }  
+    </div>
+
     <label htmlFor="PublicEmail">Public Email
       <input
         type="email"
@@ -126,8 +141,23 @@
 
     <!-- <textarea>{ JSON.stringify(user,undefined,4) }</textarea> -->
 
-
   </div>
+
+
+
+
+
+  <!-- right pane -->
+  <div class="Preview">
+    <div class="_section-article _margin-center">
+      {#if user}
+        <RenderProfile Profile={ user['Profile'] } />
+      {:else}
+        Loading profile ...
+      {/if}
+    </div>
+  </div>
+
 </div>
         
 
@@ -136,27 +166,31 @@
 
 <script>
   import { goto, stores } from '@sapper/app';
+  import { getContext, onMount } from 'svelte';
+
   import { login } from '../_utils/auth/client-helpers';
   import { logger, logerror } from '../_utils/logger';
   import { getUser } from '../_utils/auth/get-user';
-  import { onMount } from 'svelte';
   import { fetchPost } from '../_utils/fetch-post';
   import { socialParse } from '../_utils/social-parse.js'
+  import RenderProfile from '../components/RenderProfile.svelte';
 
   import SocialBox from '../components/SocialBox.svelte'
 
   let email = 'janeazy@gmail.com', password = 'testtest', isLoading = false, error, token = '', user
 
+  // for Profile preview
+  const Profile$ = getContext('Profile')
+  $: Profile = $Profile$
 
   // profile items
-  let Name, PublicEmail, Social, Pitch, Title, CV, Slug
+  let Name, PublicEmail, Social, Pitch, Title, CV, Slug, CustomSlug
 
   // parsed social
   let socialProfiles
 
 
   function initData() {
-    console.log('initting data with', user)
     if (user && user['Profile']) {
       Name = user['Profile'].fields['Name']
       PublicEmail = user['Profile'].fields['PublicEmail']
@@ -166,7 +200,9 @@
       CV = user['Profile'].fields['CV']
       socialProfiles = socialParse(Social); socialProfiles=socialProfiles // reactive
       Slug = user['Profile'].fields['Slug']
+      CustomSlug = user['Profile'].fields['Slug::Custom']
     }
+    user['Profile'] = user['Profile'] // reactive profile
   }
 
 
@@ -180,6 +216,22 @@
   })
 
 
+  // update social on update
+  $: if(Social) {
+    socialProfiles = socialParse(Social); socialProfiles=socialProfiles // reactive
+  }
+
+  $: if(CustomSlug) { // update the displayed slug if user enters a custom slug
+    Slug = CustomSlug || Slug
+  }
+
+
+
+
+
+
+
+
 
   const handleSaveProfile = async (event) => {
     event.preventDefault()
@@ -188,6 +240,7 @@
     const data = {
       recordId: user['Profile'].id,
       'Sidebar::Social': Social, 
+      'Slug::Custom': CustomSlug, 
       Name, PublicEmail, Pitch, Title, CV
     }
 

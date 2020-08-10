@@ -81,7 +81,7 @@
 
       <div class="_margin-top">
         <form on:submit|preventDefault={(evt)=>handleOauth(evt,'twitter')}>
-          <button type="submit">Log in with Twitter</button>
+          <button type="submit">Sign up with Twitter</button>
         </form>
       </div>
     </div>
@@ -101,28 +101,28 @@
 
   let email = 'janeazy@gmail.com', password = 'testtest', isLoading = false, error, token = '', user
 
-  onMount(async () => {
+  // onMount(async () => {
 
-    try {
-      const response = await fetch(`api/passport/login`)
-      // console.log('onMount response:', response)
-      if(response.status == 200) {
-        const results = await response.json()
-        logger('[onMount]', 'Logged in:', results)
-        if(results.user)
-          user = results.user
-      } else {
-        // error = err
-        logger('[onMount]', 'Error:', results)
-        // goto('/passport');
-      }
-    } catch (err) {
-      error = err
-      console.error(err)
-      loggerror('[onMount]', 'Error:', err)
-      return
-    }
-  })
+  //   try {
+  //     const response = await fetch(`api/passport/login`)
+  //     // console.log('onMount response:', response)
+  //     if(response.status == 200) {
+  //       const results = await response.json()
+  //       logger('[onMount]', 'Logged in:', results)
+  //       if(results.user)
+  //         user = results.user
+  //     } else {
+  //       // error = err
+  //       logger('[onMount]', 'Error:', results)
+  //       // goto('/passport');
+  //     }
+  //   } catch (err) {
+  //     error = err
+  //     console.error(err)
+  //     logerror('[onMount]', 'Error:', err)
+  //     return
+  //   }
+  // })
 
 
 
@@ -155,14 +155,16 @@
       if(response.status == 200) {
         const results = await response.json()
         logger('[handleSignup]', 'Signed up:', results)
-        if(results.user)
+        if(results.user) {
+          goto('/profile')
           user = results.user
+        }
       }
 
     } catch (err) {
       error = err
       // console.error(err)
-      loggerror('[handleSignup]', 'Error:', err)
+      logerror('[handleSignup]', 'Error:', err)
       return
     }
   }
@@ -199,7 +201,7 @@
 
     } catch (err) {
       error = err
-      loggerror('[handleSignupActivate]', 'Error:', err)
+      logerror('[handleSignupActivate]', 'Error:', err)
       return
     }
   }

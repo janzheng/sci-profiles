@@ -7,6 +7,8 @@ import passport from 'passport'
 import { sanitizeUserForClient, hashPassword } from '../../../_utils/auth/auth-helpers'
 import { addUser, users, findUserByEmail } from '../../../_utils/auth/auth-users'
 import { sendData } from '../../../_utils/sapper-helpers'
+import { addProfileForNewUser } from '../../../_utils/auth/auth-custom'
+
 
 
 export async function post(req, res, next) {
@@ -24,9 +26,13 @@ export async function post(req, res, next) {
 
 		  const _user = await addUser(user)
 
-		  return req.login(_user, (err) => {
+		  return req.login(_user, async (err) => {
 		    if (err) next(err);
 		    else {
+		    	// create a new record in Profiles that's linked to the Account
+		    	const record = await addProfileForNewUser(_user)
+
+			    // console.log('new profile record: USER::::', _user)
 		    	return sendData({
 			  		status: true,
 			  		message: 'Signed up!',
@@ -35,9 +41,6 @@ export async function post(req, res, next) {
 				}
 		  });
     }
-
-
-		console.log('signup post ???')
 
     // should this trigger an email reminder?
   	return sendData({

@@ -9,8 +9,6 @@ export async function post(req, res, next) {
 
   const { email, password } = req.body
 
-  console.log('signup.js signing up!', email, password)
-
   try {
     if (!email || !password) {
       throw new Error('Email and password must be provided.')

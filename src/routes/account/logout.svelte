@@ -88,7 +88,7 @@
 
     } catch (err) {
       error = err
-      loggerror('[handleLogout]', 'Error:', err)
+      logerror('[handleLogout]', 'Error:', err)
       return
     }
   }

@@ -132,7 +132,7 @@
     } catch (err) {
       error = err
       // console.error(err)
-      loggerror('[handleResetPassword]', 'Error:', err)
+      logerror('[handleResetPassword]', 'Error:', err)
       return
     }
   }

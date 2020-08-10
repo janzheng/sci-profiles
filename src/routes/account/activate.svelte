@@ -104,7 +104,7 @@
     } catch (err) {
       error = err
       console.error(err)
-      loggerror('[handleActivateAccount]', 'Error:', err)
+      logerror('[handleActivateAccount]', 'Error:', err)
       return
     }
   }

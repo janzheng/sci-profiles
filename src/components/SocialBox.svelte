@@ -16,6 +16,10 @@
 		if(social.type == 'google-scholar') {
 			social.username = 'Google Scholar'
 		}
+
+		if(social.type == 'github') {
+			social.type = 'github-circled' // for icon to work
+		}
 	})
 </script>
 

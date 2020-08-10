@@ -123,7 +123,7 @@
   //   } catch (err) {
   //     error = err
   //     console.error(err)
-  //     loggerror('[onMount]', 'Error:', err)
+  //     logerror('[onMount]', 'Error:', err)
   //     return
   //   }
   // })
@@ -166,7 +166,7 @@
     } catch (err) {
       error = err
       // console.error(err)
-      loggerror('[handleSignup]', 'Error:', err)
+      logerror('[handleSignup]', 'Error:', err)
       return
     }
   }

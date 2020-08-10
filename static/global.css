@@ -15654,7 +15654,7 @@ h6.__tight {
   font-size: 126% !important;
   position: relative;
   bottom: -1px;
-  left: -3px;
+  left: -4px;
   color: #a6ce39;
 }
 ._font-phage.icon-researchgate {
@@ -15670,6 +15670,20 @@ h6.__tight {
   bottom: -3px;
   left: -3px;
   color: #3F47CC;
+}
+._font-phage.icon-github-circled {
+  font-size: 116% !important;
+  position: relative;
+  bottom: -3px;
+  left: -2px;
+  color: #333333;
+}
+._font-phage.icon-facebook {
+  font-size: 110% !important;
+  position: relative;
+  bottom: -4px;
+  left: 0px;
+  color: #3b5998;
 }
 
 .icon-mail:before {
@@ -15862,3 +15876,8 @@ h6.__tight {
 }
 
 /* '' */
+.icon-facebook:before {
+  content: "";
+}
+
+/* '' */

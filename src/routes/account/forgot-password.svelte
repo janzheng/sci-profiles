@@ -115,7 +115,7 @@
     } catch (err) {
       error = err
       // console.error(err)
-      loggerror('[handleForgot]', 'Error:', err)
+      logerror('[handleForgot]', 'Error:', err)
       return
     }
   }

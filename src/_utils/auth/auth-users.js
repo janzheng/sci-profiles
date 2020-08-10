@@ -50,6 +50,7 @@ import Cytosis from 'cytosis';
 import { config } from "dotenv";
 import { cacheGet, cacheSet, cacheClear } from "../cache"
 import { saveSetup, save } from '../../_utils/save.js'
+import { addProfileForNewUser } from './auth-custom'
 
 
 // for external services like server.js
@@ -618,11 +619,14 @@ passport.use(new TwitterStrategy({
     // does this oauth profile exist somewhere?
     user = await findUserByOauth(profile.id) 
     if(!user) { // new user
+
       user = await addUser({
         email: profile.email,
         fullName: profile.displayName,
         profiles: { twitter: profile },
       })
+
+      await addProfileForNewUser(user)
     }
   } else { // connecting oauth to existing account
     user = req.user

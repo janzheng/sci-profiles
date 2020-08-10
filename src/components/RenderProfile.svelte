@@ -7,20 +7,24 @@
 
 	export let Profile
 
-	let name = Profile.fields['Name']
-	let siteTitle = name
-	let profileImage = Profile.fields['ProfileImage'] ? Profile.fields['ProfileImage'][0]['url'] : undefined
-	let pitch = Profile.fields['Pitch']
-	let email = Profile.fields['PublicEmail']
+	let name, email, siteTitle, profileImage, pitch, socialProfiles, cvContent
+	
+	$: name = Profile.fields['Name'] || 'Jane Doe'
+	$: siteTitle = name || ''
+	$: profileImage = Profile.fields['ProfileImage'] ? Profile.fields['ProfileImage'][0]['url'] : undefined
+	$: pitch = Profile.fields['Pitch']
+	$: email = Profile.fields['PublicEmail']
+
+
 
 	// console.log('Profile.sv', Profile)
 
 	$: if(Profile.fields['Title'])
 		siteTitle = `${Profile.fields['Name']}, ${Profile.fields['Title']}`
 
-  const socialProfiles = socialParse(Profile.fields['Sidebar::Social'])
+  $: socialProfiles = socialParse(Profile.fields['Sidebar::Social'])
 
-  const cvContent = Profile.Notion ? Profile.Notion['content'] : Profile.fields['CV']
+  $: cvContent = Profile.Notion ? Profile.Notion['content'] : Profile.fields['CV']
 
   // $: console.log('socialSidebar:', socialProfiles)
 </script>

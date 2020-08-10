@@ -23,7 +23,7 @@ export const getUser = async () => {
     }
   } catch (err) {
     console.error(err)
-    loggerror('[mount-user]', 'Error:', err)
+    logerror('[mount-user]', 'Error:', err)
   }
 
   return undefined
