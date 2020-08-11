@@ -49,83 +49,121 @@
       <form on:submit|preventDefault={handleSaveProfile}>
         <button type="submit">Save Changes</button>
       </form>
-
       <form on:submit|preventDefault={handleLogout}>
         <button type="submit">Log Out</button>
       </form>
     </div>
+    {#if hasChanged}
+      <div class="_card _padding _margin-bottom-2">You've made changes! Don't forget to save!</div>
+    {/if}
 
-    <label htmlFor="Title">Title
-      <input
-        type="text"
-        id="Title"
-        name="Title"
-        bind:value={Title}
-      />
-    </label>
-    <label htmlFor="Name">Name
-      <input
-        type="text"
-        id="Name"
-        name="Name"
-        bind:value={Name}
-      />
-    </label>
+    <form id="profileForm">
 
-    <label htmlFor="CustomSlug">Custom Slug
-      <input
-        type="email"
-        id="CustomSlug"
-        name="CustomSlug"
-        bind:value={CustomSlug}
-      />
-    </label>
+      <label htmlFor="Title">Title
+        <input
+          type="text"
+          id="Title"
+          name="Title"
+          bind:value={Title}
+          on:input={triggerHasChanged}
+        />
+      </label>
+      <label htmlFor="Name">Name
+        <input
+          type="text"
+          id="Name"
+          name="Name"
+          bind:value={Name}
+          on:input={triggerHasChanged}
+        />
+      </label>
 
-    <div class="Slug _margin-bottom-2">
-      Your slug is currently set as: { Slug }  
-    </div>
+      <label htmlFor="CustomSlug">Custom Slug
+        <input
+          type="email"
+          id="CustomSlug"
+          name="CustomSlug"
+          bind:value={CustomSlug}
+          on:input={triggerHasChanged}
+        />
+      </label>
+      <div class="Slug _margin-bottom-2">
+        Your slug is currently set as: { Slug }  
+      </div>
 
-    <label htmlFor="PublicEmail">Public Email
-      <input
-        type="email"
-        id="PublicEmail"
-        name="PublicEmail"
-        bind:value={PublicEmail}
-      />
-    </label>
-    <label htmlFor="Pitch">Short Description (Pitch)
-      <input
-        type="text"
-        id="Pitch"
-        name="Pitch"
-        bind:value={Pitch}
-      />
-    </label>
-    <label htmlFor="Social">Social (paste social media links here, we'll do the rest)
-      <textarea
-        type="text"
-        id="Social"
-        name="Social"
-        rows=4
-        bind:value={Social}
-      ></textarea>
-      {#if socialProfiles}
-        <div class="_card _padding">
-          <SocialBox email={PublicEmail} socialProfiles={socialProfiles} />
-        </div>
-      {/if}
-      <!-- add a social media preview here -->
-    </label>
-    <label htmlFor="CV">CV (paste in Markdown)
-      <textarea
-        type="text"
-        id="CV"
-        name="CV"
-        rows=8
-        bind:value={CV}
-      ></textarea>
-      <!-- add a social media preview here -->
-    </label>
+
+
+      <label htmlFor="CustomSlug">Avatar URL
+        <input
+          type="text"
+          id="AvatarURL"
+          name="AvatarURL"
+          bind:value={avatarUrl}
+          on:input={triggerHasChanged}
+        />
+      </label>
+
+
+      <label htmlFor="Files">Upload Avatar
+        <input
+          type="file"
+          id="Files"
+          name="Files"
+          bind:files
+          on:input={triggerHasChanged}
+        />
+        {#if files && files.length > 0}
+          <div class="_padding _card _margin-bottom-2">{files[0].name}</div>
+        {/if}
+      </label>
+
+
+      <label htmlFor="PublicEmail">Public Email
+        <input
+          type="email"
+          id="PublicEmail"
+          name="PublicEmail"
+          bind:value={PublicEmail}
+          on:input={triggerHasChanged}
+        />
+      </label>
+      <label htmlFor="Pitch">Short Description (Pitch)
+        <input
+          type="text"
+          id="Pitch"
+          name="Pitch"
+          bind:value={Pitch}
+          on:input={triggerHasChanged}
+        />
+      </label>
+      <label htmlFor="Social">Social (paste social media links here, we'll do the rest)
+        <textarea
+          type="text"
+          id="Social"
+          name="Social"
+          rows=4
+          bind:value={Social}
+          on:input={triggerHasChanged}
+        ></textarea>
+        {#if socialProfiles}
+          <div class="_card _padding">
+            <SocialBox email={PublicEmail} socialProfiles={socialProfiles} />
+          </div>
+        {/if}
+        <!-- add a social media preview here -->
+      </label>
+      <label htmlFor="CV">CV (paste in Markdown)
+        <textarea
+          type="text"
+          id="CV"
+          name="CV"
+          rows=8
+          bind:value={CV}
+          on:input={triggerHasChanged}
+        ></textarea>
+        <!-- add a social media preview here -->
+      </label>
+    </form>
 
 
 
@@ -151,7 +189,7 @@
   <div class="Preview">
     <div class="_section-article _margin-center">
       {#if user}
-        <RenderProfile Profile={ user['Profile'] } />
+        <RenderProfile Profile={ user['Profile'] }  previewImage={ previewImage }/>
       {:else}
         Loading profile ...
       {/if}
@@ -166,31 +204,45 @@
 
 <script>
   import { goto, stores } from '@sapper/app';
-  import { getContext, onMount } from 'svelte';
+  import { getContext, onMount, tick } from 'svelte';
 
   import { login } from '../_utils/auth/client-helpers';
   import { logger, logerror } from '../_utils/logger';
   import { getUser } from '../_utils/auth/get-user';
-  import { fetchPost } from '../_utils/fetch-post';
+  import { fetchPost, fetchPostForm } from '../_utils/fetch-helpers';
   import { socialParse } from '../_utils/social-parse.js'
   import RenderProfile from '../components/RenderProfile.svelte';
 
   import SocialBox from '../components/SocialBox.svelte'
 
-  let email = 'janeazy@gmail.com', password = 'testtest', isLoading = false, error, token = '', user
+  let email = 'janeazy@gmail.com', password = 'testtest', isLoading = false, error, token = '', user, files, avatarUrl
+  let hasChanged = false
+
+
+  $: if(files) {
+    console.log('Files:', files, typeof files)
+  }
 
   // for Profile preview
   const Profile$ = getContext('Profile')
   $: Profile = $Profile$
 
+  async function triggerHasChanged() {
+    await tick() // update on next tick
+    hasChanged = true
+  }
+
   // profile items
   let Name, PublicEmail, Social, Pitch, Title, CV, Slug, CustomSlug
 
-  // parsed social
-  let socialProfiles
+
+  
+  let socialProfiles // parsed social profiles
+  let previewImage // generated preview image for user
 
 
-  function initData() {
+  async function initData() {
+    await tick()
     if (user && user['Profile']) {
       Name = user['Profile'].fields['Name']
       PublicEmail = user['Profile'].fields['PublicEmail']
@@ -201,10 +253,13 @@
       socialProfiles = socialParse(Social); socialProfiles=socialProfiles // reactive
       Slug = user['Profile'].fields['Slug']
       CustomSlug = user['Profile'].fields['Slug::Custom']
+
+      // this is super annoying since it keeps uploading a new file
+      // avatarUrl = user['Profile'].fields['ProfileImage'] ? user['Profile'].fields['ProfileImage'][0]['url'] : undefined 
     }
     user['Profile'] = user['Profile'] // reactive profile
+    hasChanged = false
   }
-
 
   onMount(async () => {
   	user = await getUser()
@@ -225,9 +280,21 @@
     Slug = CustomSlug || Slug
   }
 
+  $: if(files) { // generate preview image from the upload and send it to the profile render box
+    if(files && files[0]) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        previewImage = e.target.result
+      }
+      reader.readAsDataURL(files[0])
+    }
+  }
 
 
 
+  const uploadAvatar = async (recordId) => {
+    fetchPostForm('/api/profile/avatar', {recordId, avatar: files[0]}, fetch)
+  }
 
 
 
@@ -241,6 +308,7 @@
       recordId: user['Profile'].id,
       'Sidebar::Social': Social, 
       'Slug::Custom': CustomSlug, 
+      'ProfileImage': avatarUrl,
       Name, PublicEmail, Pitch, Title, CV
     }
 
@@ -253,6 +321,11 @@
         logger('[handleSaveProfile]', 'Saved!', results)
         user['Profile'] = results
         initData()
+
+        if(files && files.length > 0)
+          uploadAvatar(user['Profile'].id)
+
+        hasChanged = false
       }
 
     } catch (err) {
@@ -280,7 +353,7 @@
 
     } catch (err) {
       error = err
-      loggerror('[handleLogout]', 'Error:', err)
+      logerror('[handleLogout]', 'Error:', err)
       return
     }
   }
@@ -296,130 +369,6 @@
 
 
 
-
-
-
-
-<!-- 
-
-	Old fauna profile
-
-<svelte:head>
-	<title>Profile</title>
-</svelte:head>
-
-<h1>Profile page</h1>
-
-{#if isLoading}
-	<p>... loading user data</p>
-{/if}
-
-
-{#if userId}
-	your user id: { userId }
-
-	<p>user data: { JSON.stringify(userData) }
-
-	<div class="Formlet _padding-top-2" >
-		<div class="_grid-2">
-			<div class="Formlet Formlet-input _form-control _divider-bottom">
-				<label for="name" class="_form-label">Your name</label>
-				<input id="name" name="name" bind:value={name} placeholder="e.g. Jane H. Doe" required="required" type="text" class="_form-input __width-full"> 
-			</div>
-
-			<div class="Formlet Formlet-input _form-control _divider-bottom">
-				<label for="email" class="_form-label">Your email</label>
-				<input id="email" name="email" bind:value={email} placeholder="jane@phage.directory" required="required" type="email" class="_form-input __width-full"> 
-			</div>
-		</div>
-
-		<div class="Formlet Formlet-input _padding-top _form-control _divider-bottom">
-			<label for="topic" class="_form-label">Your presentation topic</label>
-			<input id="topic" name="topic" bind:value={topic} placeholder="e.g. Phage manufacturing methods" required="required" type="text" class="_form-input __width-full"> 
-		</div>
-
-		<div class="_grid-2">
-			<div>
-				{#if registered}
-					<div class="_padding-top">You're all signed up!</div>
-				{/if}
-			</div>
-			<div class="_right">
-				<input type="submit" value="Sign Up" class="_button __action  _margin-bottom-none" on:click|preventDefault={prereg}> 
-			</div>
-		</div>
-
-	</div>
-{/if}
-
-
-
-
-
-
-
-
-
-<script>
-	import { goto, stores } from '@sapper/app';
-  import { onMount } from 'svelte';
-
-	const { session } = stores();
-	import { getUserData, saveUserData } from '../_utils/user-helpers';
-
-
-	let recordId, userId, userData, isLoading, error
-
-	import marked from 'marked'
-
-	let name='', email='', topic='', registered
-
-  onMount(async () => {
-
-	  try {
-	  	isLoading = true
-		  userData = await getUserData(session)
-			console.log('userdata::: resp ::::', userData)
-
-			userId = userData.id
-			recordId = userData['content'].id
-			name = userData['content'].fields['Name']
-			email = userData['content'].fields['Email']
-  		isLoading = false
-
-	  } catch (err) {
-	  	isLoading = false
-	  	console.error('profile error or no access', err)
-			goto('/login');
-	  }
-	})
-
-	// $: console.log('session :::', $session)
-
-
-
-
-const prereg = async () => {
-	const data = {
-		recordId,
-		userId,
-		name,
-		email,
-	}
-
-	const res = await saveUserData(session, data)
-
-	if(res.status == 200) {
-		registered = true
-		email = ''
-		name = ''
-	}
-}
-
-</script>
-
-
- -->
 
 
 

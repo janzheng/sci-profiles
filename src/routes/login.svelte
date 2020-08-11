@@ -93,7 +93,7 @@
 <script>
   import { goto, stores } from '@sapper/app';
   import { login } from '../_utils/auth/client-helpers';
-  import { fetchPost } from '../_utils/fetch-post';
+  import { fetchPost } from '../_utils/fetch-helpers';
   import { logger, logerror } from '../_utils/logger';
   import { onMount } from 'svelte';
   import { getUser } from '../_utils/auth/get-user';

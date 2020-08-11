@@ -4,6 +4,7 @@ import compression from 'compression';
 import * as sapper from '@sapper/server';
 import redirect from '@polka/redirect'
 
+
 const { json } = require('body-parser');
 
 import session from 'express-session';
@@ -29,6 +30,10 @@ import cookieSession from "cookie-session";
 
 
 
+
+
+
+
 const app = polka() // You can also use Express
 
 	.use(
@@ -46,7 +51,7 @@ const app = polka() // You can also use Express
     //   })
     // }),
 		cookieSession({ // works with serverless
-			name: 'passport-auth-session',
+			name: 'phagedirectory-auth-session',
       secret: process.env.COOKIE_SESSION_KEY, // chose not to use kes
       maxAge: 24 * 60 * 60 * 1000 // 24 hours
 		}),

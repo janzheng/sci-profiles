@@ -611,7 +611,7 @@ passport.use(new LocalStrategy({
 passport.use(new TwitterStrategy({
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callbackURL: `http://localhost:${process.env.PORT}/auth/twitter-callback`,
+  callbackURL: `${process.env.DEPLOY_URL}/auth/twitter-callback` || `http://localhost:${process.env.PORT}/auth/twitter-callback`,
   passReqToCallback: true
 }, async (req, token, tokenSecret, profile, cb) => {
   let user
@@ -626,6 +626,7 @@ passport.use(new TwitterStrategy({
         profiles: { twitter: profile },
       })
 
+      
       await addProfileForNewUser(user)
     }
   } else { // connecting oauth to existing account

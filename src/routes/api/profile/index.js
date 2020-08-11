@@ -93,6 +93,9 @@ const getProfile = async () => {
   }
 }
 
+
+
+
 // get record of a profile
 export const getProfileById = async (id) => {
   let cacheStr = `profile-${id}`
@@ -109,6 +112,42 @@ export const getProfileById = async (id) => {
   cacheSet(cacheStr, record, 60*60 )
   return record
 }
+
+
+
+// this works b/c Accounts' index uses _phid as master reference between Accounts and Profiles
+export const getProfileByPhid = async (_phid) => {
+  let cacheStr = `profile-${_phid}`
+  if (cacheGet(cacheStr))
+    return cacheGet(cacheStr)
+
+  const cytosis = await new Cytosis({
+    apiKey: apiReadKey,
+    baseId: baseId,
+    bases:  [
+      {
+        tables: ['Profiles'],
+        options: {
+          "maxRecords": 1,
+          keyword: `${_phid}`,
+          matchKeywordWithFields: ['Accounts'],
+          matchStyle: 'exact',
+        }
+      },
+    ],
+    routeDetails: '[api/getProfileByPhid]',
+  })
+
+  if(cytosis.results['Profiles'] && cytosis.results['Profiles'][0]) {
+    cacheSet( cacheStr, cytosis.results['Profiles'][0] )
+    return cytosis.results['Profiles'][0] 
+  }
+
+  return undefined
+}
+
+
+
 
 
 // get record of a profile
@@ -163,6 +202,7 @@ export const saveProfile = async (profile) => {
 
     cacheClear(`profile-${recordId}`)
     cacheClear(`profile-${record.fields['Slug']}`)
+    cacheClear(`profile-${record.fields['_phid']}`)
     return record
 
   } catch(e) {
@@ -180,7 +220,7 @@ export const saveProfile = async (profile) => {
 
 
 export async function get(req, res) {
-  const { id, slug } = req.query
+  const { id, slug, _phid } = req.query
   let profile
 
   try {
@@ -188,6 +228,8 @@ export async function get(req, res) {
       profile = await getProfileById(id)
     else if(slug)
       profile = await getProfileBySlug(slug)
+    else if(_phid)
+      profile = await getProfileByPhid(_phid)
     else
       profile = await getProfile()
 
@@ -212,6 +254,12 @@ export async function get(req, res) {
 export async function post(req, res) {
   // const {Name, PublicEmail, Social, Pitch, Title, CV} = req.body
 
+
+  const { type } = req.query
+  if(type === 'avatar') {
+    // console.log('AVATAR FILES:', req.file)
+    delete req.body['Avatar']
+  }
   try {
     const profile = await saveProfile(req.body)
     return sendData(profile, res)

@@ -15489,8 +15489,9 @@ a.__quiet, ._link.__quiet {
 }
 
 .Profile-image {
-  object-fit: contain;
+  object-fit: cover;
   width: 200px;
+  height: 200px;
   border-radius: 100%;
 }
 
@@ -15640,7 +15641,7 @@ h6.__tight {
   font-size: 110% !important;
   position: relative;
   bottom: -2px;
-  left: -2px;
+  left: -1px;
   color: #0077b5;
 }
 ._font-phage.icon-twitter {
@@ -15682,7 +15683,7 @@ h6.__tight {
   font-size: 110% !important;
   position: relative;
   bottom: -4px;
-  left: 0px;
+  left: 1px;
   color: #3b5998;
 }
 

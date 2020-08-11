@@ -6,6 +6,7 @@
 	import { socialParse } from '../_utils/social-parse.js'
 
 	export let Profile
+	export let previewImage // generated from an uploaded image through file reader
 
 	let name, email, siteTitle, profileImage, pitch, socialProfiles, cvContent
 	
@@ -47,8 +48,8 @@
 	<article class="Profile-article _grid-2-3 _grid-gap-large _grid-xs-block">
 		<aside class="Profile-aside ">
 			<div class="Profile-aside--slot _pinned-sm _padding-2-sm _padding-top-2-i _padding-bottom-i">
-				{#if profileImage}
-					<img class="Profile-image" src={profileImage} alt={`${name} profile image`}/>
+				{#if profileImage || previewImage}
+					<img class="Profile-image" src={previewImage || profileImage} alt={`${name} profile image`}/>
 				{/if}
 
 				<h1 class="Profile-name">{siteTitle}</h1>
