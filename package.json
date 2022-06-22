@@ -34,7 +34,7 @@
     "faunadb": "^2.14.2",
     "formidable": "^1.2.2",
     "fs": "^0.0.1-security",
-    "got": "^11.1.4",
+    "got": "^11.8.5",
     "markdown-it": "^11.0.0",
     "markdown-it-attrs": "^3.0.3",
     "marked": "^1.0.0",
